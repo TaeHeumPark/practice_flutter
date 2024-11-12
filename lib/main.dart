@@ -1,9 +1,19 @@
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
+import 'package:workout_tracker/workout_guide_page.dart';
 import 'landing_page.dart';
+import 'package:flutter/services.dart';
 import 'workout_list_page.dart';
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 
 void main() {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]).then((_) {
+    runApp(const MyApp());
+  });
 }
 
 class MyApp extends StatelessWidget {
@@ -11,8 +21,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: WorkoutListPage(),
+    return MaterialApp(
+      theme: FlexThemeData.light(scheme: FlexScheme.redWine),
+      home: WorkoutGuidePage(),
     );
   }
 }

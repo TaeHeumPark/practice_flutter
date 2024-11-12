@@ -15,41 +15,44 @@ class WorkoutListPage extends StatelessWidget {
           itemCount: exercises.length,
           itemBuilder: (context, index) {
             final exercise = exercises[index];
-            return Row(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    padding: EdgeInsets.only(left: 10),
-                    child: Image.asset(
-                      exercise.imagePath,
-                      width: 50,
-                      height: 50,
-                      fit: BoxFit.fill,
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 3.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      padding: EdgeInsets.only(left: 10),
+                      child: Image.asset(
+                        exercise.imagePath,
+                        width: 50,
+                        height: 50,
+                        fit: BoxFit.fill,
+                      ),
                     ),
                   ),
-                ),
-                Expanded(
-                  flex: 7,
-                  child: Container(
-                    padding: EdgeInsets.all(10),
-                    child: Text(
-                      '${index + 1}. ${exercise.name}',
-                      style: TextStyle(fontSize: 18),
+                  Expanded(
+                    flex: 5,
+                    child: Container(
+                      padding: EdgeInsets.all(10),
+                      child: Text(
+                        '${index + 1}. ${exercise.name}',
+                        style: TextStyle(fontSize: 18),
+                      ),
                     ),
                   ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    padding: EdgeInsets.only(right: 10),
-                    child: Text(
-                      '${exercise.durationInMinutes}분',
-                      style: TextStyle(fontSize: 16),
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      padding: EdgeInsets.only(right: 10),
+                      child: Text(
+                        '${exercise.durationInMinutes}분',
+                        style: TextStyle(fontSize: 16),
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             );
           },
         ),
