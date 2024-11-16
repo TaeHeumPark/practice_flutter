@@ -1,14 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:workout_tracker/custom_app_bar.dart';
+import 'package:audioplayers/audioplayers.dart';
 
-class WorkoutGuidePage extends StatelessWidget {
-  const WorkoutGuidePage({super.key});
+class WorkoutGuidePage extends StatefulWidget {
+  final String? id;
+
+  WorkoutGuidePage({required this.id,super.key});
+
+  @override
+  State<WorkoutGuidePage> createState() => _WorkoutGuidePageState();
+}
+
+class _WorkoutGuidePageState extends State<WorkoutGuidePage> {
+  final player = AudioPlayer();
+  int state = 0;
 
   @override
   Widget build(BuildContext context) {
-
     // init
     final theme = Theme.of(context);
+    player.setSource(AssetSource('audio/lunge.mp3'));
 
     return Scaffold(
       appBar: CustomAppBar(title: "WorkoutGuide"),
@@ -28,7 +39,6 @@ class WorkoutGuidePage extends StatelessWidget {
                   ),
                 ),
                 IconButton(
-
                   onPressed: (){}, icon: Icon(Icons.arrow_forward_ios),
                   iconSize: theme.textTheme.displayLarge?.fontSize,
                 ),
@@ -42,8 +52,22 @@ class WorkoutGuidePage extends StatelessWidget {
             ),
           ),
           IconButton(
-            onPressed: (){},
-            icon: Icon(Icons.play_circle_fill),
+            onPressed: (){
+              if(state == 0) {
+                  state = 1;
+                setState(() {
+                  player.resume();
+                });
+              } else {
+                  state = 0;
+                setState(() {
+                  player.pause();
+                });
+              }
+              // player.play(AssetSource('audio/lunge.mp3'));
+              // player.resume();
+            },
+            icon: Icon(state == 0 ? Icons.play_circle_fill : Icons.stop_circle),
             iconSize: theme.textTheme.headlineLarge?.fontSize,
             color: theme.colorScheme.primary,
           )

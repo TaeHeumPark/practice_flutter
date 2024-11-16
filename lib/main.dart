@@ -5,6 +5,7 @@ import 'landing_page.dart';
 import 'package:flutter/services.dart';
 import 'workout_list_page.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
+import 'package:go_router/go_router.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,14 +17,33 @@ void main() {
   });
 }
 
+final GoRouter _router = GoRouter(
+  routes: <RouteBase>[
+    GoRoute(
+      path: '/',
+      builder: (BuildContext context, GoRouterState state) {
+        return const WorkoutListPage();
+      },
+      routes: <RouteBase>[
+        GoRoute(
+          path: 'guild/:id',
+          builder: (BuildContext context, GoRouterState state) {
+            return WorkoutGuidePage(id: 'someIdValue');
+          },
+        ),
+      ],
+    ),
+  ],
+);
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
+      routerConfig: _router,
       theme: FlexThemeData.light(scheme: FlexScheme.redWine),
-      home: WorkoutGuidePage(),
     );
   }
 }
