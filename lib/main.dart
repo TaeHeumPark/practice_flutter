@@ -28,7 +28,7 @@ final GoRouter _router = GoRouter(
         GoRoute(
           path: 'guild/:id',
           builder: (BuildContext context, GoRouterState state) {
-            return WorkoutGuidePage(id: 'someIdValue');
+            return WorkoutGuidePage(id: 'someIdValue',key: UniqueKey(),);
           },
         ),
       ],

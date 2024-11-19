@@ -19,8 +19,8 @@ class WorkoutListPage extends StatelessWidget {
             return GestureDetector(
               onTap: () {
                 context.go(
-                  '/guild/$index',
-                  extra: {"id" : index},
+                  '/guild/${index + 1}',
+                  extra: {"id" : (index + 1)},
                 );
               },
               child: Padding(
