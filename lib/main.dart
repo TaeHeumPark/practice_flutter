@@ -1,6 +1,7 @@
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:workout_tracker/workout_guide_page.dart';
+import 'package:workout_tracker/workout_home.dart';
 import 'landing_page.dart';
 import 'package:flutter/services.dart';
 import 'workout_list_page.dart';
@@ -22,7 +23,7 @@ final GoRouter _router = GoRouter(
     GoRoute(
       path: '/',
       builder: (BuildContext context, GoRouterState state) {
-        return const WorkoutListPage();
+        return const WorkoutHome();
       },
       routes: <RouteBase>[
         GoRoute(

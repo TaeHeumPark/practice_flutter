@@ -4,7 +4,6 @@ import 'package:workout_tracker/custom_app_bar.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:workout_tracker/model/exercise.dart';
 
-
 class WorkoutGuidePage extends StatefulWidget {
   final String? id;
 
