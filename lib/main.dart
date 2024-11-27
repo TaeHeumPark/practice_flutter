@@ -23,14 +23,31 @@ final GoRouter _router = GoRouter(
     GoRoute(
       path: '/',
       builder: (BuildContext context, GoRouterState state) {
-        return const WorkoutHome();
+        return const LandingPage();
       },
       routes: <RouteBase>[
         GoRoute(
-          path: 'guild/:id',
+          path: 'workout_home',
           builder: (BuildContext context, GoRouterState state) {
-            return WorkoutGuidePage(id: 'someIdValue',key: UniqueKey(),);
+            return WorkoutHome();
           },
+          routes: [
+            GoRoute(
+              path: 'workout_list',
+              builder: (BuildContext context, GoRouterState state) {
+                return WorkoutListPage();
+              },
+              routes: [
+                GoRoute(
+                  path: 'guild/:id',
+                  builder: (BuildContext context, GoRouterState state) {
+                    final id = int.tryParse(state.pathParameters['id'] ?? '0') ?? 0;
+                    return WorkoutGuidePage(id: id,key: UniqueKey(),);
+                  },
+                ),
+              ]
+            ),
+          ]
         ),
       ],
     ),

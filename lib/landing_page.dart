@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:workout_tracker/main.dart';
 
 class LandingPage extends StatelessWidget {
   const LandingPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    Function? goHome() {
+      context.go(
+          '/workout_home'
+      );
+      return null;
+    }
     return Scaffold(
       backgroundColor: Colors.yellow,
       body: Center(
@@ -35,7 +43,9 @@ class LandingPage extends StatelessWidget {
               ),
               Flexible(child:
               Container(
-                child: Center(child: ElevatedButton(onPressed: () {}, child: Text('Start')))
+                child: Center(child: ElevatedButton(onPressed: () {
+                  goHome();
+                }, child: Text('Start')))
                 ,
               ),
                 flex: 1,

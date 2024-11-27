@@ -1,7 +1,9 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:workout_tracker/dashboard_card.dart';
+import 'package:workout_tracker/landing_page.dart';
 
 class WorkoutHome extends StatefulWidget {
   const WorkoutHome({super.key});
@@ -106,6 +108,7 @@ class _WorkoutHomeState extends State<WorkoutHome> {
                     children: [
                       // theme.colorScheme.onPrimary
                       SizedBox(
+                        width: 250,
                         child: DashboardCard(
                           cardBackgroundColor: getRandomColor(),
                           cardIcon: Icons.run_circle_outlined,
@@ -115,10 +118,13 @@ class _WorkoutHomeState extends State<WorkoutHome> {
                           cardTitle: '그룹1',
                           cardContext: '아침을 여는 5가지 운동 프로그램',
                           cardImageAsset: 'assets/group1.jpg',
+                          customOnTap: () {
+                            context.go('/workout_home/workout_list');
+                          },
                         ),
-                        width: 250,
                       ),
                       SizedBox(
+                        width: 250,
                         child: DashboardCard(
                           cardBackgroundColor: getRandomColor(),
                           cardIcon: Icons.rowing_outlined,
@@ -128,10 +134,13 @@ class _WorkoutHomeState extends State<WorkoutHome> {
                           cardTitle: '그룹2',
                           cardContext: '근력을 키우는 프로그램',
                           cardImageAsset: 'assets/group2.jpg',
+                          customOnTap: () {
+                            context.go('/workout_list');
+                          },
                         ),
-                        width: 250,
                       ),
                       SizedBox(
+                        width: 250,
                         child: DashboardCard(
                           cardBackgroundColor: getRandomColor(),
                           cardIcon: Icons.fitness_center,
@@ -141,8 +150,10 @@ class _WorkoutHomeState extends State<WorkoutHome> {
                           cardTitle: '그룹3',
                           cardContext: '하루를 마치는 유산소 프로그램',
                           cardImageAsset: 'assets/group3.jpg',
+                          customOnTap: () {
+                            context.go('/workout_list');
+                          },
                         ),
-                        width: 250,
                       ),
                     ],
                   ),

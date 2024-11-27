@@ -3,9 +3,14 @@ import 'custom_app_bar.dart';
 import 'model/exercise.dart';
 import 'package:go_router/go_router.dart';
 
-class WorkoutListPage extends StatelessWidget {
+class WorkoutListPage extends StatefulWidget {
   const WorkoutListPage({super.key});
 
+  @override
+  State<WorkoutListPage> createState() => _WorkoutListPageState();
+}
+
+class _WorkoutListPageState extends State<WorkoutListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,8 +24,7 @@ class WorkoutListPage extends StatelessWidget {
             return GestureDetector(
               onTap: () {
                 context.go(
-                  '/guild/${index + 1}',
-                  extra: {"id" : (index + 1)},
+                  '/workout_home/workout_list/guild/${index}'
                 );
               },
               child: Padding(

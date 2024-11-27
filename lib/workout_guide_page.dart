@@ -3,9 +3,10 @@ import 'package:go_router/go_router.dart';
 import 'package:workout_tracker/custom_app_bar.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:workout_tracker/model/exercise.dart';
+import 'model/exercise.dart';
 
 class WorkoutGuidePage extends StatefulWidget {
-  final String? id;
+  final int? id;
 
   WorkoutGuidePage({required this.id,super.key});
 
@@ -21,11 +22,12 @@ class _WorkoutGuidePageState extends State<WorkoutGuidePage> {
   Widget build(BuildContext context) {
     // init
     final theme = Theme.of(context);
+    int id = widget.id ?? 0;
 
     // 전달된 extra 데이터 가져오기
-    final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+    // final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
     // 이거 args?['id']만 쓰면 String 타입으로 받아와서 int로 변환하는 작업 필수
-    final id = (args?['id'] is int) ? args!['id'] : int.tryParse(args?['id'].toString() ?? '') ?? 0;
+    // final id = (args?['id'] is int) ? args!['id'] : int.tryParse(args?['id'].toString() ?? '') ?? 0;
 
     // id에 해당하는 Exercise 객체 가져오기
     final exercise = exercises.firstWhere(
@@ -55,13 +57,13 @@ class _WorkoutGuidePageState extends State<WorkoutGuidePage> {
               children: [
                 IconButton(
                   onPressed: () async {
-                    if(id > 1) {
+                    if(id > 0) {
                       await player.stop();
                       context.go(
-                        '/guild/${id - 1}',
-                        extra: {"id" : (id - 1)},
+                        '/workout_home/workout_list/guild/${id - 1}'
                       );
                     }
+                    return;
                   }, icon: Icon(Icons.arrow_back_ios),
                   iconSize: theme.textTheme.displayLarge?.fontSize,
                 ),
@@ -72,12 +74,12 @@ class _WorkoutGuidePageState extends State<WorkoutGuidePage> {
                 IconButton(
                   onPressed: () async {
                     await player.stop();
-                    if(id < 9) {
+                    if(id < exercises.length - 1) {
                       context.go(
-                        '/guild/${id + 1}',
-                        extra: {"id" : (id + 1)},
+                        '/workout_home/workout_list/guild/${id + 1}'
                       );
                     }
+                    return;
                   }, icon: Icon(Icons.arrow_forward_ios),
                   iconSize: theme.textTheme.displayLarge?.fontSize,
                 ),
