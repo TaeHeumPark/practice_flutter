@@ -1,18 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:workout_tracker/model/exercise.dart';
 import 'custom_app_bar.dart';
-import 'model/exercise.dart';
+import 'data/workout_manager.dart';
 import 'package:go_router/go_router.dart';
 
-class WorkoutListPage extends StatefulWidget {
-  const WorkoutListPage({super.key});
+class WorkoutListPage extends StatelessWidget {
+  final int groupIndex;
 
-  @override
-  State<WorkoutListPage> createState() => _WorkoutListPageState();
-}
+  WorkoutListPage({super.key, required this.groupIndex}) {
+    WorkoutManager.currentWorkoutGroupIndex = groupIndex;
+  }
+  late List<Exercise> exercises;
 
-class _WorkoutListPageState extends State<WorkoutListPage> {
   @override
   Widget build(BuildContext context) {
+    if(groupIndex == -1) {
+      exercises = WorkoutManager.exercises;
+    }
+    else {
+      exercises = WorkoutManager.workoutGroups[groupIndex].exercises;
+    }
+
     return Scaffold(
       appBar: CustomAppBar(title: 'WorkoutList',),
       body: SizedBox(
@@ -24,7 +32,7 @@ class _WorkoutListPageState extends State<WorkoutListPage> {
             return GestureDetector(
               onTap: () {
                 context.go(
-                  '/workout_home/workout_list/guild/${index}'
+                  '/workout_home/workout_list/$groupIndex/guild/$index'
                 );
               },
               child: Padding(

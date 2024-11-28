@@ -3,12 +3,13 @@ import 'package:go_router/go_router.dart';
 import 'package:workout_tracker/custom_app_bar.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:workout_tracker/model/exercise.dart';
-import 'model/exercise.dart';
+import 'data/workout_manager.dart';
 
 class WorkoutGuidePage extends StatefulWidget {
-  final int? id;
+  final int? index;
+  final int? groupIndex;
 
-  WorkoutGuidePage({required this.id,super.key});
+  WorkoutGuidePage({required this.index,super.key, this.groupIndex});
 
   @override
   State<WorkoutGuidePage> createState() => _WorkoutGuidePageState();
@@ -22,7 +23,9 @@ class _WorkoutGuidePageState extends State<WorkoutGuidePage> {
   Widget build(BuildContext context) {
     // init
     final theme = Theme.of(context);
-    int id = widget.id ?? 0;
+    int index = widget.index ?? 0;
+    int groupIndex = widget.groupIndex ?? 0;
+    final List<Exercise> exercises = WorkoutManager.workoutGroups[groupIndex].exercises;
 
     // 전달된 extra 데이터 가져오기
     // final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
@@ -30,17 +33,18 @@ class _WorkoutGuidePageState extends State<WorkoutGuidePage> {
     // final id = (args?['id'] is int) ? args!['id'] : int.tryParse(args?['id'].toString() ?? '') ?? 0;
 
     // id에 해당하는 Exercise 객체 가져오기
-    final exercise = exercises.firstWhere(
-          (exercise) => exercise.id == id,
-      orElse: () => Exercise(
-        id: 0,
-        name: 'Unknown',
-        imagePath: '',
-        durationInMinutes: 0,
-        audioName: '',
-        kcal: 0,
-      ),
-    );
+    final exercise = exercises[index];
+    // final exercise = exercises.firstWhere(
+    //       (exercise) => exercise.id == id,
+    //   orElse: () => Exercise(
+    //     id: 0,
+    //     name: 'Unknown',
+    //     imagePath: '',
+    //     durationInMinutes: 0,
+    //     audioName: '',
+    //     kcal: 0,
+    //   ),
+    // );
 
 
     // 오디오 소스 설정
@@ -57,10 +61,10 @@ class _WorkoutGuidePageState extends State<WorkoutGuidePage> {
               children: [
                 IconButton(
                   onPressed: () async {
-                    if(id > 0) {
+                    if(index > 0) {
                       await player.stop();
                       context.go(
-                        '/workout_home/workout_list/guild/${id - 1}'
+                        '/workout_home/workout_list/$groupIndex/guild/${index - 1}'
                       );
                     }
                     return;
@@ -74,9 +78,9 @@ class _WorkoutGuidePageState extends State<WorkoutGuidePage> {
                 IconButton(
                   onPressed: () async {
                     await player.stop();
-                    if(id < exercises.length - 1) {
+                    if(index < exercises.length - 1) {
                       context.go(
-                        '/workout_home/workout_list/guild/${id + 1}'
+                        '/workout_home/workout_list/$groupIndex/guild/${index + 1}'
                       );
                     }
                     return;

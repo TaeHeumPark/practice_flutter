@@ -33,19 +33,31 @@ final GoRouter _router = GoRouter(
           },
           routes: [
             GoRoute(
+              path: 'workout_list/:group_index',
+              builder: (BuildContext context, GoRouterState state) {
+                final int groupIndex = int.tryParse(state.pathParameters['group_index'] ?? '0') ?? 0;
+                return WorkoutListPage(groupIndex: groupIndex,);
+              },
+                routes: [
+                  GoRoute(
+                    path: 'guild/:index',
+                    builder: (BuildContext context, GoRouterState state) {
+                      final int groupIndex = int.tryParse(state.pathParameters['group_index'] ?? '0') ?? 0;
+                      final int id = int.tryParse(state.pathParameters['index'] ?? '0') ?? 0;
+                      return WorkoutGuidePage(
+                        groupIndex: groupIndex,
+                        index: id,
+                        key: UniqueKey(),
+                      );
+                    },
+                  ),
+                ]
+            ),
+            GoRoute(
               path: 'workout_list',
               builder: (BuildContext context, GoRouterState state) {
-                return WorkoutListPage();
+                return WorkoutListPage(groupIndex: -1,);
               },
-              routes: [
-                GoRoute(
-                  path: 'guild/:id',
-                  builder: (BuildContext context, GoRouterState state) {
-                    final id = int.tryParse(state.pathParameters['id'] ?? '0') ?? 0;
-                    return WorkoutGuidePage(id: id,key: UniqueKey(),);
-                  },
-                ),
-              ]
             ),
           ]
         ),

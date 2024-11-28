@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workout_tracker/dashboard_card.dart';
+import 'package:workout_tracker/data/workout_manager.dart';
 import 'package:workout_tracker/landing_page.dart';
 
 class WorkoutHome extends StatefulWidget {
@@ -20,7 +21,6 @@ class _WorkoutHomeState extends State<WorkoutHome> {
 
     // 랜덤 색상을 반환하는 메서드
     Color getRandomColor() {
-      print('호출${cnt++}');
       final colors = [
         Colors.red.shade200,
         Colors.green.shade200,
@@ -116,10 +116,10 @@ class _WorkoutHomeState extends State<WorkoutHome> {
                           cardTitleColor: theme.colorScheme.onPrimary,
                           cardContentColor: theme.colorScheme.onPrimary,
                           cardTitle: '그룹1',
-                          cardContext: '아침을 여는 5가지 운동 프로그램',
+                          cardContext: WorkoutManager.workoutGroups[0].groupDescription,
                           cardImageAsset: 'assets/group1.jpg',
                           customOnTap: () {
-                            context.go('/workout_home/workout_list');
+                            context.go('/workout_home/workout_list/0');
                           },
                         ),
                       ),
@@ -132,10 +132,10 @@ class _WorkoutHomeState extends State<WorkoutHome> {
                           cardTitleColor: theme.colorScheme.onPrimary,
                           cardContentColor: theme.colorScheme.onPrimary,
                           cardTitle: '그룹2',
-                          cardContext: '근력을 키우는 프로그램',
+                          cardContext: WorkoutManager.workoutGroups[1].groupDescription,
                           cardImageAsset: 'assets/group2.jpg',
                           customOnTap: () {
-                            context.go('/workout_list');
+                            context.go('/workout_home/workout_list/1');
                           },
                         ),
                       ),
@@ -148,10 +148,10 @@ class _WorkoutHomeState extends State<WorkoutHome> {
                           cardTitleColor: theme.colorScheme.onPrimary,
                           cardContentColor: theme.colorScheme.onPrimary,
                           cardTitle: '그룹3',
-                          cardContext: '하루를 마치는 유산소 프로그램',
+                          cardContext: WorkoutManager.workoutGroups[2].groupDescription,
                           cardImageAsset: 'assets/group3.jpg',
                           customOnTap: () {
-                            context.go('/workout_list');
+                            context.go('/workout_home/workout_list/2');
                           },
                         ),
                       ),
@@ -168,6 +168,10 @@ class _WorkoutHomeState extends State<WorkoutHome> {
                   cardContentColor: theme.colorScheme.onPrimary,
                   cardTitle: '운동 이어서 하기',
                   cardContext: '당신의 몸은 해낼 수 있다. 당신의 마음만 설득하면 된다.',
+                  customOnTap: () {
+                    if(WorkoutManager.currentWorkoutGroupIndex == null) return;
+                    context.go('/workout_home/workout_list/${WorkoutManager.currentWorkoutGroupIndex}');
+                  },
                 ))
           ],
         ),
