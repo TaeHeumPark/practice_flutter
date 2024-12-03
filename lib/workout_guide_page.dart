@@ -16,24 +16,34 @@ class WorkoutGuidePage extends StatefulWidget {
 }
 
 class _WorkoutGuidePageState extends State<WorkoutGuidePage> {
+
+  late Exercise exercise;
+  late int index;
+  late int groupIndex;
+  late List<Exercise> exercises;
+
+  @override
+  void initState() {
+    index = widget.index ?? 0;
+    groupIndex = widget.groupIndex ?? 0;
+    exercises = WorkoutManager.workoutGroups[groupIndex].exercises;
+    exercise = exercises[index];
+    WorkoutManager.increaseTodayExerciseMinute(exercise.durationInMinutes);
+    WorkoutManager.increaseConsumptionKcal(exercise.kcal);
+    super.initState();
+  }
   final player = AudioPlayer();
   int state = 0;
 
   @override
   Widget build(BuildContext context) {
-    // init
     final theme = Theme.of(context);
-    int index = widget.index ?? 0;
-    int groupIndex = widget.groupIndex ?? 0;
-    final List<Exercise> exercises = WorkoutManager.workoutGroups[groupIndex].exercises;
-
     // 전달된 extra 데이터 가져오기
     // final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
     // 이거 args?['id']만 쓰면 String 타입으로 받아와서 int로 변환하는 작업 필수
     // final id = (args?['id'] is int) ? args!['id'] : int.tryParse(args?['id'].toString() ?? '') ?? 0;
 
     // id에 해당하는 Exercise 객체 가져오기
-    final exercise = exercises[index];
     // final exercise = exercises.firstWhere(
     //       (exercise) => exercise.id == id,
     //   orElse: () => Exercise(

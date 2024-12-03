@@ -1,5 +1,6 @@
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
+import 'package:workout_tracker/animation_practice_widget.dart';
 import 'package:workout_tracker/frame_page.dart';
 import 'package:workout_tracker/settings_page.dart';
 import 'package:workout_tracker/workout_guide_page.dart';
@@ -31,7 +32,7 @@ final GoRouter _router = GoRouter(
     GoRoute(
       path: '/',
       builder: (BuildContext context, GoRouterState state) {
-        return const LandingPage();
+        return const AnimationPracticeWidget();
       },
     ),
     StatefulShellRoute.indexedStack(

@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:workout_tracker/animation_practice_widget.dart';
 import 'package:workout_tracker/dashboard_card.dart';
 import 'package:workout_tracker/data/workout_manager.dart';
 import 'package:workout_tracker/landing_page.dart';
@@ -14,10 +15,29 @@ class WorkoutHome extends StatefulWidget {
 }
 
 class _WorkoutHomeState extends State<WorkoutHome> {
+  late Future<int> montlyCountFuture;
+  late Future<int> todayExerciseMinute;
+  late Future<int> consumptionKcal;
+
+  @override
+  void initState() {
+    montlyCountFuture = WorkoutManager.getMonthlyWorkoutCount();
+    todayExerciseMinute = WorkoutManager.getTodayExerciseMinute();
+    consumptionKcal = WorkoutManager.getConsumptionKcal();
+    super.initState();
+  }
+
+  @override
+  void didUpdateWidget(covariant WorkoutHome oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    montlyCountFuture = WorkoutManager.getMonthlyWorkoutCount();
+    todayExerciseMinute = WorkoutManager.getTodayExerciseMinute();
+    consumptionKcal = WorkoutManager.getConsumptionKcal();
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    int cnt = 0;
 
     // 랜덤 색상을 반환하는 메서드
     Color getRandomColor() {
@@ -67,10 +87,25 @@ class _WorkoutHomeState extends State<WorkoutHome> {
                 children: [
                   Expanded(
                     flex: 50,
-                    child: DashboardCard(
-                      cardIcon: Icons.fitness_center,
-                      cardTitle: 'Monthly',
-                      cardContext: '12회',
+                    child: FutureBuilder(
+                      // 빌드가 되는 과정에서 30번 호출이 될 수도 있음
+                      // 그래서 함수를 future타입에 넣으면 안됨
+                      // 함수로 리턴된 future타입을 넣을 것
+                      future: montlyCountFuture,
+                      builder: (context, snapshot) {
+                        if(snapshot.connectionState == ConnectionState.waiting) {
+                          return CircularProgressIndicator();
+                        }
+                        if(snapshot.hasError) {
+                          return Text('Error : ${snapshot.error}');
+                        }
+                        final monthlyWorkoutCount = snapshot.data ?? 0;
+                        return DashboardCard(
+                          cardIcon: Icons.fitness_center,
+                          cardTitle: 'Monthly',
+                          cardContext: '${monthlyWorkoutCount}회',
+                        );
+                      }
                     ),
                   ),
                   Spacer(
@@ -81,17 +116,41 @@ class _WorkoutHomeState extends State<WorkoutHome> {
                     child: Column(
                       children: [
                         Expanded(
-                          child: DashboardCard(
-                            cardIcon: Icons.update,
-                            cardTitle: '오늘운동시간',
-                            cardContext: '10분',
+                          child: FutureBuilder(
+                            future: todayExerciseMinute,
+                            builder: (context, snapshot) {
+                              if(snapshot.connectionState == ConnectionState.waiting) {
+                                return CircularProgressIndicator();
+                              }
+                              if(snapshot.hasError) {
+                                return Text('Error : ${snapshot.error}');
+                              }
+                              final todayExerciseMinute = snapshot.data ?? 0;
+                              return DashboardCard(
+                                cardIcon: Icons.update,
+                                cardTitle: '오늘운동시간',
+                                cardContext: '${todayExerciseMinute}분',
+                              );
+                            }
                           ),
                         ),
                         Expanded(
-                          child: DashboardCard(
-                            cardIcon: Icons.fitness_center,
-                            cardTitle: '소모칼로리',
-                            cardContext: '100Kcal',
+                          child: FutureBuilder(
+                            future: consumptionKcal,
+                            builder: (context, snapshot) {
+                              if(snapshot.connectionState == ConnectionState.waiting) {
+                                return CircularProgressIndicator();
+                              }
+                              if(snapshot.hasError) {
+                                return Text('Error : ${snapshot.error}');
+                              }
+                              final consumptionKcal = snapshot.data ?? 0;
+                              return DashboardCard(
+                                cardIcon: Icons.fitness_center,
+                                cardTitle: '소모칼로리',
+                                cardContext: '${consumptionKcal}Kcal',
+                              );
+                            }
                           ),
                         ),
                       ],

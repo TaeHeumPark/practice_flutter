@@ -1,5 +1,6 @@
 import 'package:workout_tracker/model/exercise.dart';
 import 'package:workout_tracker/model/workout_group.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class WorkoutManager {
   static int? currentWorkoutGroupIndex;
@@ -108,6 +109,41 @@ class WorkoutManager {
           exercises[4],
         ]
     )
-
   ];
+
+  static Future<void> increaseMonthlyWorkoutCount() async{
+    final SharedPreferencesAsync asyncPrefs = SharedPreferencesAsync();
+    int monthlyCount = await getMonthlyWorkoutCount();
+    asyncPrefs.setInt('monthlyCount', ++monthlyCount);
+    }
+
+  static Future<int> getMonthlyWorkoutCount() async{
+    final SharedPreferencesAsync asyncPrefs = SharedPreferencesAsync();
+    int monthlyCount = await asyncPrefs.getInt('monthlyCount') ?? 0 ;
+    return monthlyCount;
+  }
+
+  static Future<void> increaseTodayExerciseMinute(int exerciseMinute) async{
+    final SharedPreferencesAsync asyncPrefs = SharedPreferencesAsync();
+    int todayExerciseMinute = await getTodayExerciseMinute();
+    asyncPrefs.setInt('todayExerciseMinute', todayExerciseMinute = todayExerciseMinute + exerciseMinute);
+  }
+
+  static Future<int> getTodayExerciseMinute() async{
+    final SharedPreferencesAsync asyncPrefs = SharedPreferencesAsync();
+    int todayExerciseMinute = await asyncPrefs.getInt('todayExerciseMinute') ?? 0;
+    return todayExerciseMinute;
+  }
+
+  static Future<void> increaseConsumptionKcal(int kcal) async{
+    final SharedPreferencesAsync asyncPrefs = SharedPreferencesAsync();
+    int consumptionKcal = await getConsumptionKcal();
+    asyncPrefs.setInt('consumptionKcal', consumptionKcal = consumptionKcal + kcal);
+  }
+
+  static Future<int> getConsumptionKcal() async{
+    final SharedPreferencesAsync asyncPrefs = SharedPreferencesAsync();
+    int consumptionKcal = await asyncPrefs.getInt('consumptionKcal') ?? 0;
+    return consumptionKcal;
+  }
 }
