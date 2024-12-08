@@ -24,60 +24,76 @@ class WorkoutListPage extends StatelessWidget {
 
     return Scaffold(
       appBar: CustomAppBar(title: 'WorkoutList',),
-      body: SizedBox(
-        width: double.infinity,
-        child: ListView.builder(
-          itemCount: exercises.length,
-          itemBuilder: (context, index) {
-            final exercise = exercises[index];
-            return GestureDetector(
-              onTap: () {
-                context.go(
-                  '/workout_home/workout_list/$groupIndex/guild/$index'
-                );
-              },
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 3.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: Container(
-                        padding: EdgeInsets.only(left: 10),
-                        child: Image.asset(
-                          exercise.imagePath,
-                          width: 50,
-                          height: 50,
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 5,
-                      child: Container(
-                        padding: EdgeInsets.all(10),
-                        child: Text(
-                          '${index + 1}. ${exercise.name}',
-                          style: TextStyle(fontSize: 18),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Container(
-                        padding: EdgeInsets.only(right: 10),
-                        child: Text(
-                          '${exercise.durationInMinutes}분',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ),
-                    ),
-                  ],
+      body: Column(
+        children: [
+          Hero(
+            tag: 'group_$groupIndex', // WorkoutHome의 Hero tag와 동일하게 설정
+            child: Container(
+              width: double.infinity,
+              height: 250,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/group${groupIndex+1}.jpg'), // 해당 그룹의 이미지
+                  fit: BoxFit.cover,
                 ),
               ),
-            );
-          },
-        ),
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: exercises.length,
+              itemBuilder: (context, index) {
+                final exercise = exercises[index];
+                return GestureDetector(
+                  onTap: () {
+                    context.go(
+                      '/workout_home/workout_list/$groupIndex/guild/$index'
+                    );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 3.0),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                            padding: EdgeInsets.only(left: 10),
+                            child: Image.asset(
+                              exercise.imagePath,
+                              width: 50,
+                              height: 50,
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 5,
+                          child: Container(
+                            padding: EdgeInsets.all(10),
+                            child: Text(
+                              '${index + 1}. ${exercise.name}',
+                              style: TextStyle(fontSize: 18),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                            padding: EdgeInsets.only(right: 10),
+                            child: Text(
+                              '${exercise.durationInMinutes}분',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

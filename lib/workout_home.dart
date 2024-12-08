@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:workout_tracker/animated_text_carousel.dart';
 import 'package:workout_tracker/animation_practice_widget.dart';
 import 'package:workout_tracker/dashboard_card.dart';
 import 'package:workout_tracker/data/workout_manager.dart';
@@ -18,6 +19,19 @@ class _WorkoutHomeState extends State<WorkoutHome> {
   late Future<int> montlyCountFuture;
   late Future<int> todayExerciseMinute;
   late Future<int> consumptionKcal;
+  Color getRandomColor() {
+    final colors = [
+      Colors.red.shade200,
+      Colors.green.shade200,
+      Colors.blue.shade200,
+      Colors.orange.shade200,
+      Colors.purple.shade200,
+      Colors.pink.shade200,
+      Colors.yellow.shade600,
+      Colors.cyan.shade200,
+    ];
+    return colors[Random().nextInt(colors.length)];
+  }
 
   @override
   void initState() {
@@ -39,20 +53,7 @@ class _WorkoutHomeState extends State<WorkoutHome> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    // 랜덤 색상을 반환하는 메서드
-    Color getRandomColor() {
-      final colors = [
-        Colors.red.shade200,
-        Colors.green.shade200,
-        Colors.blue.shade200,
-        Colors.orange.shade200,
-        Colors.purple.shade200,
-        Colors.pink.shade200,
-        Colors.yellow.shade600,
-        Colors.cyan.shade200,
-      ];
-      return colors[Random().nextInt(colors.length)];
-    }
+
 
     return Scaffold(
       body: SafeArea(
@@ -63,12 +64,7 @@ class _WorkoutHomeState extends State<WorkoutHome> {
             Row(
               children: [
                 Expanded(
-                  child: Column(
-                    children: [
-                      Text('Just Do It'),
-                      Text('간단하다. 흔들리면 그것은 '),
-                    ],
-                  ),
+                  child: AnimatedTextCarousel(),
                 ),
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 20),
@@ -168,50 +164,59 @@ class _WorkoutHomeState extends State<WorkoutHome> {
                       // theme.colorScheme.onPrimary
                       SizedBox(
                         width: 250,
-                        child: DashboardCard(
-                          cardBackgroundColor: getRandomColor(),
-                          cardIcon: Icons.run_circle_outlined,
-                          cardIconColor: theme.colorScheme.onPrimary,
-                          cardTitleColor: theme.colorScheme.onPrimary,
-                          cardContentColor: theme.colorScheme.onPrimary,
-                          cardTitle: '그룹1',
-                          cardContext: WorkoutManager.workoutGroups[0].groupDescription,
-                          cardImageAsset: 'assets/group1.jpg',
-                          customOnTap: () {
-                            context.go('/workout_home/workout_list/0');
-                          },
+                          child: Hero(
+                            tag: 'group_1',
+                            child: DashboardCard(
+                              cardBackgroundColor: getRandomColor(),
+                              cardIcon: Icons.run_circle_outlined,
+                              cardIconColor: theme.colorScheme.onPrimary,
+                              cardTitleColor: theme.colorScheme.onPrimary,
+                              cardContentColor: theme.colorScheme.onPrimary,
+                              cardTitle: '그룹1',
+                              cardContext: WorkoutManager.workoutGroups[0].groupDescription,
+                              cardImageAsset: 'assets/group1.jpg',
+                              customOnTap: () {
+                                context.go('/workout_home/workout_list/0');
+                              },
+                            ),
+                          ),
+                        ),
+                      SizedBox(
+                        width: 250,
+                        child: Hero(
+                          tag: 'group_2',
+                          child: DashboardCard(
+                            cardBackgroundColor: getRandomColor(),
+                            cardIcon: Icons.rowing_outlined,
+                            cardIconColor: theme.colorScheme.onPrimary,
+                            cardTitleColor: theme.colorScheme.onPrimary,
+                            cardContentColor: theme.colorScheme.onPrimary,
+                            cardTitle: '그룹2',
+                            cardContext: WorkoutManager.workoutGroups[1].groupDescription,
+                            cardImageAsset: 'assets/group2.jpg',
+                            customOnTap: () {
+                              context.go('/workout_home/workout_list/1');
+                            },
+                          ),
                         ),
                       ),
                       SizedBox(
                         width: 250,
-                        child: DashboardCard(
-                          cardBackgroundColor: getRandomColor(),
-                          cardIcon: Icons.rowing_outlined,
-                          cardIconColor: theme.colorScheme.onPrimary,
-                          cardTitleColor: theme.colorScheme.onPrimary,
-                          cardContentColor: theme.colorScheme.onPrimary,
-                          cardTitle: '그룹2',
-                          cardContext: WorkoutManager.workoutGroups[1].groupDescription,
-                          cardImageAsset: 'assets/group2.jpg',
-                          customOnTap: () {
-                            context.go('/workout_home/workout_list/1');
-                          },
-                        ),
-                      ),
-                      SizedBox(
-                        width: 250,
-                        child: DashboardCard(
-                          cardBackgroundColor: getRandomColor(),
-                          cardIcon: Icons.fitness_center,
-                          cardIconColor: theme.colorScheme.onPrimary,
-                          cardTitleColor: theme.colorScheme.onPrimary,
-                          cardContentColor: theme.colorScheme.onPrimary,
-                          cardTitle: '그룹3',
-                          cardContext: WorkoutManager.workoutGroups[2].groupDescription,
-                          cardImageAsset: 'assets/group3.jpg',
-                          customOnTap: () {
-                            context.go('/workout_home/workout_list/2');
-                          },
+                        child: Hero(
+                          tag: 'group_3',
+                          child: DashboardCard(
+                            cardBackgroundColor: getRandomColor(),
+                            cardIcon: Icons.fitness_center,
+                            cardIconColor: theme.colorScheme.onPrimary,
+                            cardTitleColor: theme.colorScheme.onPrimary,
+                            cardContentColor: theme.colorScheme.onPrimary,
+                            cardTitle: '그룹3',
+                            cardContext: WorkoutManager.workoutGroups[2].groupDescription,
+                            cardImageAsset: 'assets/group3.jpg',
+                            customOnTap: () {
+                              context.go('/workout_home/workout_list/2');
+                            },
+                          ),
                         ),
                       ),
                     ],

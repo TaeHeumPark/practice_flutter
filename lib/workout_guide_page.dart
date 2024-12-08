@@ -106,26 +106,39 @@ class _WorkoutGuidePageState extends State<WorkoutGuidePage> {
               color: theme.colorScheme.secondary,
             ),
           ),
-          IconButton(
-            onPressed: (){
-              if(state == 0) {
-                  state = 1;
-                setState(() {
-                  player.resume();
-                });
-              } else {
-                  state = 0;
-                setState(() {
-                  player.pause();
-                });
-              }
-              // player.play(AssetSource('audio/lunge.mp3'));
-              // player.resume();
+          AnimatedSwitcher(
+            duration: Duration(seconds: 1), // 애니메이션 지속 시간
+            transitionBuilder: (Widget child, Animation<double> animation) {
+              return FadeTransition(
+                opacity: animation,
+                child: SlideTransition(
+                  position: Tween<Offset>(
+                    begin: Offset(0.0, 1.0), // 아래에서 위로 이동
+                    end: Offset.zero,
+                  ).animate(animation),
+                  child: child,
+                ),
+              );
             },
-            icon: Icon(state == 0 ? Icons.play_circle_fill : Icons.pause_circle),
-            iconSize: theme.textTheme.headlineLarge?.fontSize,
-            color: theme.colorScheme.primary,
+            child: IconButton(
+              key: ValueKey<int>(state), // 키를 변경해야 AnimatedSwitcher가 변경을 감지
+              onPressed: () {
+                setState(() {
+                  if (state == 0) {
+                    state = 1;
+                    player.resume();
+                  } else {
+                    state = 0;
+                    player.pause();
+                  }
+                });
+              },
+              icon: Icon(state == 0 ? Icons.play_circle_fill : Icons.pause_circle),
+              iconSize: theme.textTheme.headlineLarge?.fontSize,
+              color: theme.colorScheme.primary,
+            ),
           )
+
         ],
       ),
     );
