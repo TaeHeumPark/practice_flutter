@@ -58,7 +58,7 @@ class DashboardCard extends StatelessWidget {
                   alignment: Alignment.center,
                   child: Text(
                     cardTitle,
-                    style: theme.textTheme.titleLarge?.copyWith(
+                    style: theme.textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                         color: cardTitleColor ?? Colors.black),
                   ),
