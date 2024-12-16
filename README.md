@@ -5,3 +5,9 @@
 오디오 설정 완료
 
 타이머 예정
+
+Firebase
+- storage
+- database
+- hosting
+사용
