@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:workout_tracker/custom_app_bar.dart';
+import 'package:go_router/go_router.dart';
+import 'package:workout_tracker/frame_page.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
@@ -114,12 +116,15 @@ class LoginPage extends StatelessWidget {
                 children: [
                   Text('Don\'t have an account?'),
                   TextButton(
-                      onPressed: (){},
+                      onPressed: (){
+                        context.go('/settings/login/registration');
+                      },
                       style: ButtonStyle(
                         // 버튼 스타일 패딩 없애기
                         padding: WidgetStateProperty.all<EdgeInsets>(EdgeInsets.zero),
                       ),
-                      child: Text('Sign up'))
+                      child: Text('Sign up')
+                  )
                 ],
               )
             ],
