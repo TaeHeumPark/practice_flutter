@@ -123,7 +123,78 @@ class FirebaseAuthService {
     }
   }
 
-  Future<void> deleteAccount() async {
-    //계정삭제 코드 작성
+  Future<void> updatePhotoUrl(String? url) async {
+    try {
+      await _auth.currentUser?.updatePhotoURL(url);
+    } catch (e) {
+      throw Exception('수정 실패:$e');
+    }
   }
+
+  Future<void> deletePhotoUrl() async {
+    try {
+      await _auth.currentUser?.updatePhotoURL(null);
+    } catch (e) {
+      throw Exception('수정 실패:$e');
+    }
+  }
+
+  Future<void> sendVerificationEmail() async {
+    try {
+      if (!(_auth.currentUser?.emailVerified??true)) {
+        await _auth.currentUser?.sendEmailVerification();
+      } else {
+        throw Exception('이미 이메일 인증이 완료되었습니다.');
+      }
+    } catch (e) {
+      throw Exception('인증 메일 전송에 실패했습니다.');
+    }
+  }
+
+  Future<void> deleteAccount() async {
+    try{
+      await _auth.currentUser?.delete();
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'requires-recent-login') {
+        rethrow;  // 재인증 로직 호출
+      } else {
+        throw Exception('탈퇴과정에 문제가 있습니다. ${e.toString()}');
+      }
+    }catch(e){
+      print(e);
+      throw Exception('탈퇴과정에 문제가 있습니다. ${e.toString()}');
+    }
+  }
+
+  Future<void> reauthenticateAndDeleteAccount(String password) async {
+    String? errorMessage;
+    try {
+      AuthCredential credential = EmailAuthProvider.credential(
+        email: _auth.currentUser!.email!,
+        password: password,
+      );
+      await _auth.currentUser?.reauthenticateWithCredential(credential);
+      await _auth.currentUser?.delete();
+
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        errorMessage='해당 이메일에 해당하는 사용자를 찾을 수 없습니다.';
+      } else if (e.code == 'wrong-password') {
+        errorMessage='잘못된 비밀번호입니다.';
+      } else {
+        errorMessage='재인증 중 오류 발생: ${e.message}';
+      }
+    } catch (e) {
+      errorMessage='탈퇴과정에 문제가 있습니다.';
+    }
+
+    if(errorMessage !=null){
+      throw Exception(errorMessage);
+    }
+  }
+
+  Stream<User?> userChangesStream() {
+    return _auth.userChanges();
+  }
+
 }

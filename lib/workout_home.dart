@@ -6,6 +6,7 @@ import 'package:workout_tracker/animated_text_carousel.dart';
 import 'package:workout_tracker/animation_practice_widget.dart';
 import 'package:workout_tracker/dashboard_card.dart';
 import 'package:workout_tracker/data/workout_manager.dart';
+import 'package:workout_tracker/firebase_auth_service.dart';
 import 'package:workout_tracker/landing_page.dart';
 
 class WorkoutHome extends StatefulWidget {
@@ -19,6 +20,11 @@ class _WorkoutHomeState extends State<WorkoutHome> {
   late Future<int> montlyCountFuture;
   late Future<int> todayExerciseMinute;
   late Future<int> consumptionKcal;
+
+  final FirebaseAuthService _auth = FirebaseAuthService();
+  String? profileImageURL;
+
+
   Color getRandomColor() {
     final colors = [
       Colors.red.shade200,
@@ -38,6 +44,15 @@ class _WorkoutHomeState extends State<WorkoutHome> {
     montlyCountFuture = WorkoutManager.getMonthlyWorkoutCount();
     todayExerciseMinute = WorkoutManager.getTodayExerciseMinute();
     consumptionKcal = WorkoutManager.getConsumptionKcal();
+    profileImageURL = _auth.user?.photoURL;
+    // 유저 정보 변경시 수정된 이미지 URL 가져오기
+    _auth.userChangesStream().listen(
+        (user){
+          setState(() {
+            profileImageURL = user?.photoURL;
+          });
+        }
+    );
     super.initState();
   }
 
@@ -67,14 +82,24 @@ class _WorkoutHomeState extends State<WorkoutHome> {
                   child: AnimatedTextCarousel(),
                 ),
                 Container(
-                  margin: EdgeInsets.symmetric(horizontal: 20),
-                  width: 70,
-                  height: 70,
+                  width: 80,
+                  height: 80,
                   decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                          image: AssetImage('assets/profile.jfif'))),
-                )
+                    border: Border.all(width: 4, color: Colors.orange),
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                        image: profileImageURL != null
+                            ? NetworkImage(profileImageURL!)
+                            : AssetImage('assets/me.jpg'),
+                        onError: (_,__){
+                          setState(() {
+                            profileImageURL = null;
+                          });
+                        },
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
               ],
             ),
             Expanded(
