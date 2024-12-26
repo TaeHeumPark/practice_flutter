@@ -1,7 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:workout_tracker/animation_practice_widget.dart';
 import 'package:workout_tracker/frame_page.dart';
+import 'package:workout_tracker/profile_page.dart';
+import 'package:workout_tracker/reset_password_page.dart';
 import 'package:workout_tracker/settings_page.dart';
 import 'package:workout_tracker/workout_guide_page.dart';
 import 'package:workout_tracker/workout_home.dart';
@@ -120,18 +123,31 @@ final GoRouter _router = GoRouter(
               },
               routes: [
                 GoRoute(
-                    path: 'login',
-                    builder: (context, state) {
-                      return LoginPage();
-                    },
-                    routes: [
-                      GoRoute(
-                          path: 'registration',
-                          builder: (context, state) {
-                            return RegistrationPage();
-                          }
-                      )
-                    ]),
+                  path: 'login',
+                  builder: (context, state) {
+                    return LoginPage();
+                  },
+                  routes: [
+                    GoRoute(
+                      path: 'registration',
+                      builder: (context, state) {
+                        return RegistrationPage();
+                      },
+                    ),
+                    GoRoute(
+                      path: 'reset_password',
+                      builder: (context, state) {
+                        return ResetPasswordPage();
+                      },
+                    ),
+                    GoRoute(
+                      path: 'profile',
+                      builder: (context, state) {
+                        return ProfilePage();
+                      },
+                    )
+                  ],
+                ),
               ],
             ),
           ],
@@ -139,6 +155,19 @@ final GoRouter _router = GoRouter(
       ],
     ),
   ],
+  redirect: (context, state) {
+    User? user = FirebaseAuth.instance.currentUser;
+    if ( (user == null) &&
+        (state.uri.path != '/settings/login/registration' &&
+            state.uri.path != '/settings/login/reset_password' &&
+            state.uri.path != '/')) {
+      return '/settings/login';
+    }
+    //settings tab클릭했을때 로그인 상태에따라 화면 이동
+    if(user !=null && (state.uri.path == '/settings/login' || state.uri.path == '/settings/login/registration')){
+      return '/settings';
+    }
+  },
 );
 
 class MyApp extends StatelessWidget {

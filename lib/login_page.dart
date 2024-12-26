@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:workout_tracker/custom_app_bar.dart';
 import 'package:go_router/go_router.dart';
+import 'package:workout_tracker/show_snackbar.dart';
+import 'firebase_auth_service.dart';
 import 'package:workout_tracker/frame_page.dart';
 
 class LoginPage extends StatelessWidget {
@@ -8,6 +10,7 @@ class LoginPage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   String? email;
   String? password;
+  final auth = FirebaseAuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -81,20 +84,28 @@ class LoginPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      context.go('/settings/login/reset_password');
+                    },
                     child: Text('Forgot your password?'),
-                  ),
+                  )
                 ],
               ),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    // 이거 한 줄로 form validate에 있는 모든 것이 수행이 됨.
-                    if(_formKey.currentState?.validate()??false){
+                    if (_formKey.currentState?.validate() ?? false) {
                       _formKey.currentState?.save();
+                      auth.signInWithEmail(
+                        email: email!,
+                        password: password!,
+                      ).then((_) {
+                        showSnackBar(context, '로그인이 되었습니다.');
+                      }).catchError((error) {
+                        showSnackBar(context, error.toString());
+                      });
                     }
-                    // TODO : firebase에서 아디비번 맞는지
                   },
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.symmetric(vertical: 15),

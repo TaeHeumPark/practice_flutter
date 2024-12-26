@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:workout_tracker/show_snackbar.dart';
 import '../widgets/item_card.dart';
+import 'firebase_auth_service.dart';
 
 class SettingsPage extends StatelessWidget {
   static String id = 'setings_page';
+  final auth = FirebaseAuthService();
 
   Widget _arrow() {
     return Icon(
@@ -38,15 +41,34 @@ class SettingsPage extends StatelessWidget {
                     ),
                     SizedBox(height: 10),
                     ItemCard(
-                      title: '로그인',
+                      title: auth.isLoggedIn()?'로그아웃':'로그인',
                       color: (brightness == Brightness.light)
                           ? Colors.white
                           : Theme.of(context).scaffoldBackgroundColor,
                       rightWidget: null,
                       callback: () {
-                        context.go('/settings/login');
+                        if(auth.isLoggedIn()){
+                          auth.signOut().then((_) {
+                            showSnackBar(context, '로그아웃되었습니다.');
+                          }).catchError((error) {
+                            showSnackBar(context, error.toString());
+                          });
+                        }else{
+                          context.go('/settings/login');
+                        }
                       },
                     ),
+                    ItemCard(
+                      title: 'Profile',
+                      color: (brightness == Brightness.light)
+                          ? Colors.white
+                          : Theme.of(context).scaffoldBackgroundColor,
+                      rightWidget: _arrow(),
+                      callback: () {
+                        context.go('/settings/profile');
+                      },
+                    ),
+                    SizedBox(height: 20),
                     ItemCard(
                       title: '알림',
                       color: (brightness == Brightness.light)
