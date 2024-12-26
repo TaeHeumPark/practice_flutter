@@ -11,3 +11,6 @@ Firebase
 - database
 - hosting
 사용
+
+
+- team logo : assets 방식은 리소스 낭비 -> 확장성 고려한 firestore 채택
