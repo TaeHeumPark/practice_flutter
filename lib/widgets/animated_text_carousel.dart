@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'data/wise_saying.dart';
+import '../data/wise_saying.dart';
 
 class AnimatedTextCarousel extends StatefulWidget {
   const AnimatedTextCarousel({super.key});

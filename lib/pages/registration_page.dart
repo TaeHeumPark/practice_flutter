@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:workout_tracker/firebase_auth_service.dart';
-import 'package:workout_tracker/frame_page.dart';
+import '../../services/firebase_auth_service.dart';
+import 'package:workout_tracker/pages/frame_page.dart';
 import 'package:workout_tracker/show_snackbar.dart';
 
 class RegistrationPage extends StatelessWidget {

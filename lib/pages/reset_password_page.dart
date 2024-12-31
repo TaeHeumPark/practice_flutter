@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter/material.dart';
 import 'package:workout_tracker/show_snackbar.dart';
-import 'firebase_auth_service.dart';
+import '../../services/firebase_auth_service.dart';
 
 class ResetPasswordPage extends StatelessWidget {
   ResetPasswordPage({super.key});

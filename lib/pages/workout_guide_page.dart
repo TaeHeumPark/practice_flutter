@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:workout_tracker/custom_app_bar.dart';
+import 'package:workout_tracker/widgets/custom_app_bar.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:workout_tracker/model/exercise.dart';
-import 'data/workout_manager.dart';
+import '../logic/workout_manager.dart';
 
 class WorkoutGuidePage extends StatefulWidget {
   final int? index;

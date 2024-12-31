@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:workout_tracker/model/exercise.dart';
-import 'custom_app_bar.dart';
-import 'data/workout_manager.dart';
+import '../widgets/custom_app_bar.dart';
+import '../logic/workout_manager.dart';
 import 'package:go_router/go_router.dart';
 
 class WorkoutListPage extends StatelessWidget {

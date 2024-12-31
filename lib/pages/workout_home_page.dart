@@ -2,12 +2,12 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:workout_tracker/animated_text_carousel.dart';
-import 'package:workout_tracker/animation_practice_widget.dart';
-import 'package:workout_tracker/dashboard_card.dart';
-import 'package:workout_tracker/data/workout_manager.dart';
-import 'package:workout_tracker/firebase_auth_service.dart';
-import 'package:workout_tracker/landing_page.dart';
+import 'package:workout_tracker/widgets/animated_text_carousel.dart';
+import 'package:workout_tracker/pages/animation_practice_widget.dart';
+import 'package:workout_tracker/widgets/dashboard_card.dart';
+import 'package:workout_tracker/logic/workout_manager.dart';
+import '../../services/firebase_auth_service.dart';
+import 'package:workout_tracker/pages/landing_page.dart';
 
 class WorkoutHome extends StatefulWidget {
   const WorkoutHome({super.key});

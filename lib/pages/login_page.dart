@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:workout_tracker/custom_app_bar.dart';
+import 'package:workout_tracker/widgets/custom_app_bar.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workout_tracker/show_snackbar.dart';
-import 'firebase_auth_service.dart';
-import 'package:workout_tracker/frame_page.dart';
+import '../../services/firebase_auth_service.dart';
+import 'package:workout_tracker/pages/frame_page.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
